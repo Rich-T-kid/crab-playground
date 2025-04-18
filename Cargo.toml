@@ -1,0 +1,7 @@
+[package]
+name = "basic-crab"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
