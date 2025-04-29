@@ -52,11 +52,33 @@ RefCell<T> mini-assignments:
 
 */
 fn main(){
-    let val = hp_mal();
-    println!("{:?}",val)
 }
 
-fn hp_mal() -> Box<Vec<i32>>{
-    let x = Box::new(vec![1,2,3,4,5]);
-    x
+//Smart Pointers
+/*
+Box<T> mini-assignments:
+
+1. Implement a basic **Linked List** using `Box`.  
+   Each node should hold a number and a `Box<Node>` pointing to the next node (or None at the end).
+
+2. Build a simple **Tree** where each node has a value and a single child, using `Box`.  
+   Walk through the tree and print all the values.
+
+3. Create a **recursive enum** for an arithmetic expression: `Add`, `Mul`, and `Value`, using `Box` to nest expressions.  
+   Write a function that evaluates the expression.
+
+---
+*/
+
+struct Node<T>{
+   value: T,
+   next:Option<Box<Node>>
+}
+impl Node<T>{
+   fn new<T>(value:T) -> Self{
+      Self{value,next:None}
+   }
+   fn append<T>(&mut self, other: Node<T>) {
+      self.next = other
+   }
 }
