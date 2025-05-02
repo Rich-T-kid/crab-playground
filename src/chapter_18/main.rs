@@ -1,5 +1,5 @@
 /*
-Alright — here’s a **clean set of mini programming assignments** after **Chapter 18 (Patterns and Matching)**:
+Alright — h(ere’s a **clean set of mini programming assignments** after **Chapter 18 (Patterns and Matching)**:
 
 ---
 
@@ -19,21 +19,11 @@ using a `match` expression.
 - Write a function that uses a `match` to print the first element if it’s 0, otherwise print "Not starting with zero".
 
 ---
-
+)
 **3. Match Enums**
 
 - Define an enum `Direction` with variants `North`, `South`, `East`, `West`.
 - Write a function that matches on `Direction` and prints what movement it represents.
-
----
-
-**4. Destructure Structs**
-
-- Define a `Point` struct with `x` and `y` fields.
-- Write a function that matches on the struct to check:
-  - If it’s on the x-axis (y == 0),
-  - y-axis (x == 0),
-  - Or neither.
 
 ---
 
@@ -90,4 +80,45 @@ That way you can knock out the easier ones first and build momentum 🔥.
 Let’s go if you want!
 */
 
-fn main(){}
+fn main(){
+  /*let items = vec![-2,0,-20,15,200,0,80];
+  for x in items.iter(){
+    println!("{} is {}",*x,match_basic(*x))
+  }*/
+  let valid = (0,20,40);
+  let invalid = (20,0,0);
+  println!("{:?} is {} ",valid,match_tuple(valid));
+  println!("{:?} is {} ",invalid,match_tuple(invalid))
+}
+
+fn match_basic(val:i32) -> String{
+  match val{
+    val if val < 0 => String::from("Negative"),
+    val if val == 0 => String::from("Zero"),
+    val if val > 0 => String::from("Positive"),
+    _ => String::from("Invalid")
+  }
+}
+
+fn match_tuple(case:(i32,i32,i32)) -> String{
+  match case{
+    (0,..) => format!("Starts with 0"),
+    _ => format!("Doesnt start with 0")
+  }
+}
+
+fn guard(val:Option<i32>) -> String{
+  match val{
+    Some(x) if x % 2 == 0 => format!("{x} is odd"),
+    Some(x) => format!("{x} is odd"),
+    None => format!("No number")
+  }
+}
+
+
+fn partial_match(val:(i32,i32,i32,i32)) -> i32{
+  match val{
+    (20,_,30,_) => 2,
+    _ => 0
+  }
+}

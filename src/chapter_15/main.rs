@@ -1,4 +1,4 @@
-use std::vec;
+use std::{collections::btree_map::Values, ops::Add, vec};
 
 //Smart Pointers
 /*
@@ -52,33 +52,76 @@ RefCell<T> mini-assignments:
 
 */
 fn main(){
+  let mut n1 = Node::new(20);
+  let mut n2 = Node::new(30);
+  let  n3 = Node::new(40);
+  n2.append(n3);
+  n1.append(n2);
+  print_list(n1);
 }
 
-//Smart Pointers
+
+struct Node{
+   value: i32,
+   next:Option<Box<Node>>
+}
+impl Node{
+   fn new(value:i32) -> Self{
+      Self{value,next:None}
+   }
+   fn append(&mut self, other: Node) {
+      self.next = Some(Box::new(other))
+   }
+}
+fn print_list(mut head: Node) {
+    let mut current = Some(Box::new(head));
+
+    while let Some(node) = current {
+        println!("{}", node.value);
+        current = node.next;
+    }
+}
+
+enum Expression{
+  Add(i32,i32),
+  Sub(i32,i32),
+  Value(i32),
+}
+impl Expression{
+  fn execute(&self) -> i32{
+    match  self {
+        Expression::Add(a,b) => a+b,
+        Expression::Sub(a,b) => a -b,
+        Expression::Value(a) => *a
+    }
+  }
+}
+
+
 /*
-Box<T> mini-assignments:
+Rc<T> mini-assignments:
 
-1. Implement a basic **Linked List** using `Box`.  
-   Each node should hold a number and a `Box<Node>` pointing to the next node (or None at the end).
+1. Build a **shared tree** where multiple branches share the same child node.  
+   Use `Rc` so multiple parents can point to the same leaf.
 
-2. Build a simple **Tree** where each node has a value and a single child, using `Box`.  
-   Walk through the tree and print all the values.
+2. Create a simple **graph** where two nodes share a reference to a common third node (like A and B both pointing to C).
 
-3. Create a **recursive enum** for an arithmetic expression: `Add`, `Mul`, and `Value`, using `Box` to nest expressions.  
-   Write a function that evaluates the expression.
+3. Write a **reference counter tracker**:  
+   Create an `Rc<String>`, clone it a few times, and print how many strong references exist after each clone and drop.
 
 ---
 */
+use std::rc::Rc;
+struct Tree{
+  value: i32,
+  children: Vec<Rc<Tree>>,
+} 
 
-struct Node<T>{
-   value: T,
-   next:Option<Box<Node>>
-}
-impl Node<T>{
-   fn new<T>(value:T) -> Self{
-      Self{value,next:None}
-   }
-   fn append<T>(&mut self, other: Node<T>) {
-      self.next = other
-   }
+impl Tree{
+  fn new(value: i32) -> Self {
+    Self { value,  children: Vec::new()}
+  }
+  fn add_child(&mut self,child: Rc<Tree>){
+    self.children.push(child);
+  }
 }
